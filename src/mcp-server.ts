@@ -6,17 +6,20 @@ import { reviewRepository } from "./core.js";
 
 const server = new McpServer({ name: "repository-inspector", version: "2.0.0" });
 
+const reviewRepositoryInputShape = {
+  repositoryPath: z.string().describe("Repository path to inspect."),
+  baseRef: z.string().optional(),
+  validationCommands: z.array(z.string()).optional(),
+};
+type ReviewRepositoryInput = z.infer<z.ZodObject<typeof reviewRepositoryInputShape>>;
+
 server.tool(
   "review_repository",
   "Inspects a Git repository and returns a review report.",
-  {
-    repo_path: z.string().describe("Repository path to inspect."),
-    baseRef: z.string().optional(),
-    validationCommands: z.array(z.string()).optional(),
-  },
-  async (input: any) => {
+  reviewRepositoryInputShape,
+  async (input: ReviewRepositoryInput) => {
     const report = await reviewRepository({
-      repositoryPath: input.repoPath,
+      repositoryPath: input.repositoryPath,
       baseRef: input.baseRef,
       validationCommands: input.validationCommands,
     });
