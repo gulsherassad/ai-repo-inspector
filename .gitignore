@@ -1,4 +1,4 @@
 node_modules/
 dist/
 review-report.md
-*.log
+*.log.DS_Store
