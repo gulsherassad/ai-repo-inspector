@@ -6,6 +6,7 @@ export type ChangedFile = {
 export type ValidationResult = {
   command: string;
   status: "passed" | "failed";
+  exitCode: number;
   output: string;
 };
 
